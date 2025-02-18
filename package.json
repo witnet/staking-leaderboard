@@ -7,11 +7,16 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "fmt": "prettier --write --list-different .",
+    "fmt:check": "prettier . --check"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "6.13.1",
+    "@vueuse/core": "^12.7.0",
+    "witnet-toolkit": "github:witnet/witnet-toolkit.git#2.1.x",
     "nuxt": "^3.15.4",
+    "prettier": "^3.5.2",
     "sass": "^1.85.0",
     "vue": "latest",
     "vue-router": "latest",
