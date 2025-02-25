@@ -23,7 +23,7 @@
         <tbody>
           <tr
             v-for="(staker, index) in visibleStakers"
-            :key="staker.address"
+            :key="staker.withdrawer"
             class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1"
           >
             <th class="label">Rank</th>
@@ -32,9 +32,9 @@
             </td>
             <th class="label">Address</th>
             <td
-             class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500"
+              class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500 font-mono"
             >
-              {{ staker.address ?? 'unknown' }}
+              {{ staker.withdrawer ?? "unknown" }}
             </td>
             <th class="label">Amount</th>
             <td
@@ -44,7 +44,7 @@
             </td>
             <th class="label">Timestamp</th>
             <td
-             class="px-md py-md whitespace-nowrap text-sm text-end  sm:text-start"
+              class="px-md py-md whitespace-nowrap text-sm text-end sm:text-start font-mono"
             >
               {{ formatDate(staker.timestamp) }}
             </td>
@@ -56,9 +56,9 @@
           class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-wit-blue-500"
         />
       </div>
-    <div class="border-t border-white-500 flex justify-end pb-md">
-      <WPagination :total="100" :pageSize="5" :page="1" class="text-white-50 mt-md" />
-    </div>
+      <div class="border-t border-white-500 flex justify-end pb-md">
+        <!-- <WPagination :total="100" :pageSize="5" :page="1" class="text-white-50 mt-md" /> -->
+      </div>
 </BaseCard>
 </template>
 
