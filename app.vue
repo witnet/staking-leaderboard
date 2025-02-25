@@ -26,11 +26,20 @@
 import { ref, onMounted } from "vue"
 import { useIntervalFn } from "@vueuse/core"
 import { WFooter } from "wit-vue-ui"
+import dayjs from "dayjs"
+
 import { footerSections } from "./footerSections"
 
 const { data, refresh } = await useFetch("/api/staking")
 
 useIntervalFn(refresh, 10000)
+
+function epochToTimestamp(genesisDate, epoch) {
+  const secondsSinceGenesis = epoch * 45
+  const targetDate = dayjs(genesisDate).add(secondsSinceGenesis, "second")
+
+  return targetDate.valueOf()
+}
 
 const visibleStakers = computed(() => {
   return data.value.map((stake) => {
@@ -38,9 +47,8 @@ const visibleStakers = computed(() => {
     const withdrawer = stake.key.withdrawer
     const amount = stake.value.coins
     const epoch = stake.value.epochs.mining
-    const since = new Date(
-      new Date() - new Date(stake.value.epochs.mining * 45),
-    ).toISOString()
+    const genesisDate = new Date(1602666000000)
+    const timestamp = epochToTimestamp(genesisDate, epoch)
 
     return {
       id: `${withdrawer}${validator}${amount}${epoch}`,
@@ -48,7 +56,7 @@ const visibleStakers = computed(() => {
       withdrawer,
       amount,
       epoch,
-      since,
+      timestamp,
     }
   })
 })

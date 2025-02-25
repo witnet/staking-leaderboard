@@ -46,7 +46,7 @@
             <td
              class="px-md py-md whitespace-nowrap text-sm text-end  sm:text-start"
             >
-              {{ staker.since }}
+              {{ formatDate(staker.timestamp) }}
             </td>
           </tr>
         </tbody>
@@ -63,11 +63,18 @@
 </template>
 
 <script setup>
+import dayjs from "dayjs"
 import { WPagination } from "wit-vue-ui"
 const props = defineProps({
   loading: Boolean,
-  visibleStakers: Array
+  visibleStakers: Array,
 })
+
+function formatDate(timestamp) {
+  const targetDate = dayjs(timestamp)
+
+  return targetDate.format("MMM D, YYYY [@] hh:mm A")
+}
 </script>
 <style lang="scss" scoped>
 .pointer-events-none {
