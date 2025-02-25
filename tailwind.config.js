@@ -56,6 +56,37 @@ export default {
         950: '#063a46'
       }
     },
+    extend: {
+      fontFamily: {
+        title: ['Outfit', 'sans-serif']
+      }
+    },
+    screens: {
+      lg: { max: '1600px' },
+      md: { max: '1200px' },
+      sm: { max: '706px' },
+      xs: { max: '350px' }
+    },
+    spacing: {
+      xs: '4px',
+      sm: '8px',
+      md: '16px',
+      'md-alt': '24px',
+      lg: '32px',
+      xl: '40px',
+      '2xl': '64px',
+      '3xl': '80px',
+      'sm-x-screen': '15vw',
+      'md-x-screen': '50vw',
+      '2-md-x-screen': '70vw',
+      'lg-x-screen': '90vw',
+      'xl-x-screen': '100vw',
+      'sm-y-screen': '15vh',
+      'md-y-screen': '50vh',
+      '2-md-y-screen': '70vh',
+      'lg-y-screen': '90vh',
+      'xl-y-screen': '100vh'
+    },
   },
   plugins: []
 }
