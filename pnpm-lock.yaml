@@ -23,6 +23,9 @@ importers:
       sass:
         specifier: ^1.85.0
         version: 1.85.0
+      tokenizr:
+        specifier: ^1.7.0
+        version: 1.7.0
       vue:
         specifier: latest
         version: 3.5.13(typescript@5.7.3)
@@ -3313,6 +3316,9 @@ packages:
 
   tokenizr@1.5.7:
     resolution: {integrity: sha512-w6qS6F5PNtY30DxoRD4a7nC7zOlPM2SlpQ4zLhOmqBaB1VCZrlV82bLpc/lKNOdNmrwIwcsJLDcjEJ8f7UG6Mg==}
+
+  tokenizr@1.7.0:
+    resolution: {integrity: sha512-XHJRmcTZRK4xr9Rjci/Z5JerDwV4SOczO7G/hhrIddNLDJY9hZY7pX6vC7GvDUtlfjFb0BvBblE5JAVKbB2OEQ==}
 
   totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
@@ -7513,6 +7519,8 @@ snapshots:
   toidentifier@1.0.1: {}
 
   tokenizr@1.5.7: {}
+
+  tokenizr@1.7.0: {}
 
   totalist@3.0.1: {}
 

@@ -17,6 +17,7 @@
     "witnet-toolkit": "github:witnet/witnet-toolkit.git#2.1.x",
     "nuxt": "^3.15.4",
     "prettier": "^3.5.2",
+    "tokenizr": "^1.7.0",
     "sass": "^1.85.0",
     "vue": "latest",
     "vue-router": "latest",
