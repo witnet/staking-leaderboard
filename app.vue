@@ -1,35 +1,23 @@
 <template>
-  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-    <SvgIcon name="logo" />
-    <!-- Hero Section with Total Staked Progress -->
-    <div class="max-w-7xl mx-auto mb-16">
-      <div class="text-center mb-8">
-        <h1 class="text-5xl font-bold text-black mb-4">Race to stake</h1>
-        <p class="text-[rgb(0,226,237)] text-xl">
+  <div class="grid grid-rows-[max-content_1fr_max-content] grid-cols-[1fr] w-full justify-items-center">
+    <div class="max-w-[1300px] w-full lg:px-md">
+      <SvgIcon name="logo" class="w-[170px] mt-md" />
+    </div>
+    <div class="max-w-[1100px] w-full">
+    <div class="grid gap-lg grid-cols-2 grid-rows-1 sm:mt-md sm:grid-cols-1  mt-3xl items-center">
+      <div class="h-max lg:px-md">
+        <h1 class="font-title text-5xl text-white-50 font-bold">Race to stake</h1>
+        <p class="text-xl text-white-200 mt-sm">
           Secure the network, earn rewards
         </p>
       </div>
-
-      <StakeVolume :visible-stakers="visibleStakers" :loading="loading" />
+      <APYCalculator />
     </div>
-
-    <!-- Main Content Grid with Sticky Calculator -->
-
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 relative">
-        <!-- Leaderboard Section - Spans 3 columns -->
-
-        <LeaderBoard :visible-stakers="visibleStakers" />
-
-        <!-- Sticky Calculator Section - Spans 2 columns -->
-
-        <div class="lg:col-span-2">
-          <APYCalculator />
-        </div>
-      </div>
+    <StakeVolume :visible-stakers="visibleStakers" :loading="loading" class="h-max" />
+    <LeaderBoard :visible-stakers="visibleStakers" class="h-max" />
     </div>
+    <WFooter :footer-sections="footerSections" />
   </div>
-  <WFooter :footer-sections="footerSections" />
 </template>
 
 <script setup>
