@@ -6,8 +6,8 @@ on:
       - '**'
 
 jobs:
-  lint-and-build:
-    name: Run Lint and Build
+  Validate:
+    name: Lint and Build
     runs-on: ubuntu-latest
 
     steps:
