@@ -24,6 +24,6 @@ logs
 !.env.example
 
 #
-./ansible/Caddyfile
-./ansible/inventory.ini
-./ansible/key.pem
+ansible/Caddyfile
+ansible/inventory.ini
+ansible/key.pem

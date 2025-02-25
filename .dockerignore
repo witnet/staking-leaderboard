@@ -1,0 +1,32 @@
+# Development artifacts
+.git
+.github
+.gitignore
+.prettierrc
+.DS_Store
+.fleet
+.idea
+
+# Build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node modules and logs
+node_modules
+logs
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Deployment related
+ansible
+
+# Documentation
+README.md
