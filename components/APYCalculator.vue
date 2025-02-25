@@ -53,7 +53,7 @@
 
 <script setup>
 import { WButton } from "wit-vue-ui"
-import { formatNumber } from '@/utils/formatNumber.js'
+import { formatNumber } from "@/utils/formatNumber.js"
 import { ref } from "vue"
 
 const calculatedAPY = ref(null)
@@ -61,11 +61,11 @@ const estimatedMonthlyRewards = ref(null)
 const calculatorInput = ref("")
 
 const calculateAPY = () => {
-  calculatedAPY.value = "12.5"
+  // const yearlyEmission = 78_840_000
+  // const initial = 300_000_000
+  const apy = 0.2628 // yearlyEmission / initial
+  calculatedAPY.value = "26.28"
   const amount = parseFloat(calculatorInput.value) || 100000
-  estimatedMonthlyRewards.value = formatNumber(
-    Math.floor((amount * 0.125) / 12),
-  )
+  estimatedMonthlyRewards.value = formatNumber(Math.floor((amount * apy) / 12))
 }
-
 </script>
