@@ -18,8 +18,7 @@ export default defineEventHandler(async () => {
 
   try {
     const provider = new Witnet.RPC.Provider("http://3.133.4.38:21339")
-    const stakes = await provider.stakes({ params: { limit: 10, offset: 0 } })
-
+    const stakes = await provider.stakes({ params: { limit: 50, offset: 0 } })
     // Store in cache
     cache.data = stakes
     cache.timestamp = now
