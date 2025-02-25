@@ -6,6 +6,7 @@ COPY . .
 
 RUN npm install -g pnpm pm2
 RUN pnpm install
+RUN pnpm lint
 RUN pnpm build
 
 EXPOSE 3000
