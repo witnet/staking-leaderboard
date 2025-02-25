@@ -1,53 +1,41 @@
 <template>
-  <WCard class="">
-    <template #header>
-      <div class="flex justify-center items-center">
-        <h2 class="text-2xl font-bold text-[rgb(0,226,237)]">
-          Race to stake
-        </h2>
-      </div>
-    </template>
-
-    <template #description>
       <div class="">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="grid grid-cols-3 sm:grid-cols-1 gap-6 mb-md">
           <div class="text-center">
-            <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">
+            <p class="title">
               Total Staked
             </p>
-            <p class="text-3xl font-bold text-black">
+            <p class="data">
               {{ formatNumber(totalStaked) }}
             </p>
           </div>
           <div class="text-center">
-            <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">
+            <p class="title">
               Progress to Goal
             </p>
-            <p class="text-3xl font-bold text-black">
+            <p class="data ">
               {{ ((totalStaked / stakingGoal) * 100).toFixed(2) }}%
             </p>
           </div>
           <div class="text-center">
-            <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">
+            <p class="title">
               Target
             </p>
-            <p class="text-3xl font-bold text-black">
+            <p class="data ">
               {{ formatNumber(stakingGoal) }}
             </p>
           </div>
         </div>
 
         <div class="relative">
-          <div class="overflow-hidden h-6 bg-gray-800 rounded-full">
+          <div class="overflow-hidden h-md bg-black-800 rounded-full">
             <div
-              class="h-full bg-[rgb(0,226,237)] rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(0,226,237,0.5)]"
+              class="h-full bg-wit-blue-500 rounded-full transition-all duration-300"
               :style="{ width: `${(totalStaked / stakingGoal) * 100}%` }"
             />
           </div>
         </div>
       </div>
-    </template>
-  </WCard>
 </template>
 
 <script setup>
@@ -65,3 +53,12 @@ const totalStaked = computed(() => {
     : 0
 })
 </script>
+
+<style lang="scss" scoped>
+.title {
+  @apply font-title text-white-200 text-sm uppercase tracking-wider mb-md;
+}
+.data {
+  @apply font-title text-white-50 text-3xl font-bold;
+}
+</style>

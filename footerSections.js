@@ -3,24 +3,20 @@ export const footerSections = [
     title: "Developers",
     links: [
       {
-        url: "#reference",
-        label: "reference",
+        url: "https://docs.witnet.io/smart-contracts/witnet-data-feeds/api-reference",
+        label: "Reference",
       },
       {
-        url: "#randomness",
-        label: "randomness",
+        url: "https://docs.witnet.io/smart-contracts/witnet-randomness-oracle/generating-randomness",
+        label: "Randomness",
       },
       {
-        url: "#randomness",
-        label: "randomness",
+        url: "https://docs.witnet.io/smart-contracts/supported-chains",
+        label: "Supported chains",
       },
       {
-        url: "#supported_chains",
-        label: "supported_chains",
-      },
-      {
-        url: "#solidity_sdk",
-        label: "solidity_sdk",
+        url: "https://www.npmjs.com/package/witnet-solidity",
+        label: "Solidity SDK",
       },
     ],
   },
@@ -28,20 +24,20 @@ export const footerSections = [
     title: "Ecosystem",
     links: [
       {
-        url: "#block_explorer",
-        label: "block_explorer",
+        url: "https://witnet.network",
+        label: "Block Explorer",
       },
       {
-        url: "#data_feeds_explorer",
-        label: "data_feeds_explorer",
+        url: "https://feeds.witnet.io",
+        label: "Data Feeds Explorer",
       },
       {
-        url: "#sheikah",
-        label: "sheikah",
+        url: "https://sheikah.app",
+        label: "Sheikah",
       },
       {
-        url: "#my_wit_wallet",
-        label: "my_wit_wallet",
+        url: "https://mywitwallet.com",
+        label: "myWitWallet",
       },
     ],
   },
@@ -49,16 +45,16 @@ export const footerSections = [
     title: "Learn",
     links: [
       {
-        url: "#whitepaper",
-        label: "whitepaper",
+        url: "https://witnet.io/witnet-whitepaper.pdf",
+        label: "Whitepaper",
       },
       {
-        url: "#medium",
-        label: "medium",
+        url: "https://medium.com/witnet",
+        label: "Medium",
       },
       {
-        url: "#tutorials",
-        label: "tutorials",
+        url: "https://docs.witnet.io/intro/tutorials",
+        label: "Tutorials",
       },
     ],
   },

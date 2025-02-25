@@ -1,68 +1,50 @@
 <template>
-<WCard class="lg:col-span-3 space-y-8">
-  <template #header>
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold text-[rgb(0,226,237)]">
-        Staking Leaderboard
-      </h2>
-      <span class="text-gray-400 text-sm">Top Stakers</span>
-    </div>
-  </template>
-
-  <template #description>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-800">
-        <thead class="">
-          <tr>
-            <th
-              class="px-6 py-3 text-left text-xs font-bold text-[rgb(0,226,237)] uppercase tracking-wider"
-            >
-              Rank
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-bold text-[rgb(0,226,237)] uppercase tracking-wider"
-            >
-              Address
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-bold text-[rgb(0,226,237)] uppercase tracking-wider"
-            >
-              Staked Amount
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-bold text-[rgb(0,226,237)] uppercase tracking-wider"
-            >
-              Since
-            </th>
-          </tr>
+<BaseCard class="!w-full">
+  <h2 class="text-xl font-bold text-white-50 mb-md p-md sm:w-max">
+    Staking Leaderboard
+  </h2>
+      <table class="w-full divide-y divide-white-500 text-white-200 mb-md sm:w-md">
+        <thead class="text-xs text-white-200 sm:hidden">
+            <tr>
+                <th scope="col" class="px-md py-md text-start">
+                  Rank
+                </th>
+                <th scope="col" class="px-md py-md text-start">
+                  Address
+                </th>
+                <th scope="col" class="px-md py-md text-start">
+                  Staked Amount
+                </th>
+                <th scope="col" class="px-md text-end">
+                  Timestamp
+                </th>
+            </tr>
         </thead>
-        <tbody class="divide-y divide-gray-800">
+        <tbody>
           <tr
             v-for="(staker, index) in visibleStakers"
             :key="staker.address"
-            class="hover:bg-gray-300 transition-all duration-200"
+            class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1"
           >
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <span
-                  class="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center text-[rgb(0,226,237)] font-bold"
-                >
-                  {{ index + 1 }}
-                </span>
-              </div>
+            <th class="label">Rank</th>
+            <td class="px-md py-md whitespace-nowrap">
+              {{ index + 1 }}
             </td>
+            <th class="label">Address</th>
             <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-[rgb(0,226,237)]"
+             class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500"
             >
-              {{ staker.address }}
+              {{ staker.address ?? 'unknown' }}
             </td>
+            <th class="label">Amount</th>
             <td
-              class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black"
+             class="px-md py-md whitespace-nowrap text-sm font-bold text-black"
             >
               {{ formatNumber(nanoWitToWit(staker.amount).toFixed()) }}
             </td>
+            <th class="label">Timestamp</th>
             <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-400"
+             class="px-md py-md whitespace-nowrap text-sm text-end  sm:text-start"
             >
               {{ staker.since }}
             </td>
@@ -71,18 +53,27 @@
       </table>
       <div v-if="loading" class="text-center py-4">
         <div
-          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[rgb(0,226,237)]"
+          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-wit-blue-500"
         />
       </div>
+    <div class="border-t border-white-500 flex justify-end pb-md">
+      <WPagination :total="100" :pageSize="5" :page="1" class="text-white-50 mt-md" />
     </div>
-  </template>
-</WCard>
+</BaseCard>
 </template>
 
 <script setup>
-import { WCard } from "wit-vue-ui"
+import { WPagination } from "wit-vue-ui"
 const props = defineProps({
   loading: Boolean,
   visibleStakers: Array
 })
 </script>
+<style lang="scss" scoped>
+.pointer-events-none {
+  @apply text-black-950;
+}
+.label {
+  @apply hidden sm:block px-md pb-xs py-md font-bold text-sm text-white-300 text-start;
+}
+</style>
