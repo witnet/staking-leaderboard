@@ -39,7 +39,7 @@ jobs:
           sed -i "s#<LATEST_PROD>#${{ steps.gettag.outputs.TAG }}#g" ./ansible/docker-compose.yml
 
       - name: Build Image
-        run: docker build -t witnet/staking-leaderboard:${{github.ref_name}} -f ./Dockerfile
+        run: docker build -t witnet/staking-leaderboard:${{github.ref_name}} -f ./Dockerfile .
 
       - name: Publish Image
         run: docker push witnet/staking-leaderboard:${{github.ref_name}}
