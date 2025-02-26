@@ -26,7 +26,7 @@ services:
         published: 443
         mode: host
     volumes:
-      - /home/ubuntu/dfe/Caddyfile:/etc/caddy/Caddyfile
+      - /home/ubuntu/staking-leaderboard/Caddyfile:/etc/caddy/Caddyfile
     networks:
       - DFE
     logging: *default-loki
