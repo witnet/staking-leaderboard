@@ -32,9 +32,11 @@
             </td>
             <th class="label">Address</th>
             <td
-              class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500 font-mono truncate"
+              class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500 font-mono truncate hover:cursor-pointer"
             >
-              {{ staker.withdrawer ?? "unknown" }}
+              <a :href="`https://witnet.network/search/${staker.withdrawer}`" target="_blank">
+                {{ staker.withdrawer ?? "unknown" }}
+              </a>
             </td>
             <th class="label">Amount</th>
             <td
