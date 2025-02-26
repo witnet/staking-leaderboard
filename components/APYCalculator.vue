@@ -37,18 +37,18 @@
         v-if="calculatedAPY && !errorMessage"
         class="mt-md p-6 rounded-lg"
       >
-        <div class="flex gap-md">
-          <div class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-max">
-            <p class="text-sm text-white-200 mb-xs block">
+        <div class="flex sm:flex-col gap-md">
+          <div class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-full">
+            <p class="text-sm text-white-200 mb-xs">
               Annual Percentage Yield
             </p>
             <p class="text-2xl font-bold text-wit-blue-500">
               {{ calculatedAPY }}%
             </p>
           </div>
-          <div class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-max">
+          <div class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-full">
             <p class="text-sm text-white-200 mb-xs">Monthly Rewards</p>
-            <p class="text-2xl font-bold text-wit-blue-500 w-max block">
+            <p class="text-2xl font-bold text-wit-blue-500 w-max">
               {{ estimatedMonthlyRewards }} $WIT
             </p>
           </div>
