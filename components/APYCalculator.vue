@@ -16,7 +16,7 @@
           v-model="calculatorInput"
           type="text"
           class="w-full px-md py-xs bg-black-950 border-2 border-black-950 text-white-50 rounded-full outline-none focus:border-1 focus:border-wit-blue-500 focus:border-blue-500 text-black placeholder-white-400"
-          placeholder="Enter wallet address or amount..."
+          placeholder="Enter amount"
         />
       </div>
       <button
