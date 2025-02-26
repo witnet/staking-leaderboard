@@ -25,10 +25,16 @@
       >
         Calculate APY
       </button>
+      <p
+        v-if="showError"
+        class="text-red-50 text-sm"
+      >
+       {{ errorMessage }} 
+      </p>
     </div>
 
     <div
-        v-if="calculatedAPY"
+        v-if="calculatedAPY && !errorMessage"
         class="mt-md p-6 rounded-lg"
       >
         <div class="flex gap-md">
@@ -59,13 +65,25 @@ import { ref } from "vue"
 const calculatedAPY = ref(null)
 const estimatedMonthlyRewards = ref(null)
 const calculatorInput = ref("")
-
+const errorMessage = ref("")
 const calculateAPY = () => {
-  // const yearlyEmission = 78_840_000
-  // const initial = 300_000_000
-  const apy = 0.2628 // yearlyEmission / initial
-  calculatedAPY.value = "26.28"
-  const amount = parseFloat(calculatorInput.value) || 100000
-  estimatedMonthlyRewards.value = formatNumber(Math.floor((amount * apy) / 12))
+  if (!Number(calculatorInput.value)) {
+    errorMessage.value = "Please enter a valid number" 
+    return 
+  } else if (Number(calculatorInput.value) < 10_000) {
+    errorMessage.value = "Minimum skate amount is 10,000 $WIT"
+    return
+  }  else if (Number(calculatorInput.value) > 1_000_000) {
+    errorMessage.value = "Maximum skate amount is 10,000,000 $WIT"
+    return
+  } else {
+    errorMessage.value = ""
+    // const yearlyEmission = 78_840_000
+    // const initial = 300_000_000
+    const apy = 0.2628 // yearlyEmission / initial
+    calculatedAPY.value = "26.28"
+    const amount = parseFloat(calculatorInput.value) || 100000
+    estimatedMonthlyRewards.value = formatNumber(Math.floor((amount * apy) / 12))
+  }
 }
 </script>
