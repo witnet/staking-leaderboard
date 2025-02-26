@@ -24,15 +24,15 @@
           <tr
             v-for="(staker, index) in visibleStakers"
             :key="staker.withdrawer"
-            class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1"
+            class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1 sm:py-md"
           >
             <th class="label">Rank</th>
-            <td class="px-md py-md whitespace-nowrap">
+            <td class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap">
               {{ index + 1 }}
             </td>
             <th class="label">Address</th>
             <td
-              class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500 font-mono truncate hover:cursor-pointer"
+              class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm text-wit-blue-500 font-mono truncate hover:cursor-pointer [&&]sm:py-xs"
             >
               <a :href="`https://witnet.network/search/${staker.withdrawer}`" target="_blank">
                 {{ staker.withdrawer ?? "unknown" }}
@@ -40,13 +40,13 @@
             </td>
             <th class="label">Amount</th>
             <td
-             class="px-md py-md whitespace-nowrap text-sm font-bold text-black"
+             class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm font-bold text-black"
             >
               {{ formatNumber(nanoWitToWit(staker.amount).toFixed()) }} $WIT
             </td>
             <th class="label">Timestamp</th>
             <td
-              class="px-md py-md whitespace-nowrap text-sm text-end sm:text-start font-mono"
+              class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm text-end sm:text-start sm:py-sm font-mono"
             >
               {{ formatDate(staker.timestamp) }}
             </td>
@@ -90,6 +90,9 @@ watch(currentPage, (valX, _valY) => {
   @apply text-black-950;
 }
 .label {
-  @apply hidden sm:block px-md pb-xs py-md font-bold text-sm text-white-300 text-start;
+  @apply hidden sm:block px-md font-bold text-sm text-white-300 text-start;
+}
+.t-value {
+  @apply px-md py-md [&&]:sm:pt-sm;
 }
 </style>

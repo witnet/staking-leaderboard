@@ -1,7 +1,7 @@
 <template>
       <div class="">
-        <div class="grid grid-cols-3 sm:grid-cols-1 gap-6 mb-md">
-          <div class="text-center">
+        <div class="grid grid-cols-3 sm:grid-cols-1 mb-md">
+          <div class="text-center mb-md">
             <p class="title">
               Total Staked
             </p>
@@ -9,7 +9,7 @@
               {{ formatNumber(totalStaked) }} $WIT
             </p>
           </div>
-          <div class="text-center">
+          <div class="text-center mb-md">
             <p class="title">
               Progress to Goal
             </p>
@@ -17,7 +17,7 @@
               {{ ((totalStaked / stakingGoal) * 100).toFixed(2) }}%
             </p>
           </div>
-          <div class="text-center">
+          <div class="text-center mb-md">
             <p class="title">
               Target
             </p>
@@ -56,7 +56,7 @@ const totalStaked = computed(() => {
 
 <style lang="scss" scoped>
 .title {
-  @apply font-title text-white-200 text-sm uppercase tracking-wider mb-md;
+  @apply font-title text-white-200 text-sm uppercase tracking-wider mb-sm;
 }
 .data {
   @apply font-title text-white-50 text-3xl font-bold;

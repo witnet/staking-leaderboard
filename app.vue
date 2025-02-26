@@ -94,7 +94,3 @@ onMounted(async () => {
   window.addEventListener("scroll", handleScroll)
 })
 </script>
-
-<style lang="scss">
-@import url("wit-vue-ui/style.css");
-</style>
