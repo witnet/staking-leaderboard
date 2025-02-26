@@ -11,7 +11,7 @@ x-logging:
 
 # ! Define Project Network
 networks:
-  DFE:
+  SL:
 
 # ? Services
 services:
@@ -28,12 +28,12 @@ services:
     volumes:
       - /home/ubuntu/staking-leaderboard/Caddyfile:/etc/caddy/Caddyfile
     networks:
-      - DFE
+      - SL
     logging: *default-loki
 
   staking:
     image: witnet/staking-leaderboard:<LATEST_PROD>
     container_name: staking
     networks:
-      - DFE
+      - SL
     logging: *default-loki
