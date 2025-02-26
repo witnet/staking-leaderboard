@@ -32,7 +32,7 @@
             </td>
             <th class="label">Address</th>
             <td
-              class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500 font-mono"
+              class="px-md py-md whitespace-nowrap text-sm text-wit-blue-500 font-mono truncate"
             >
               {{ staker.withdrawer ?? "unknown" }}
             </td>
@@ -40,7 +40,7 @@
             <td
              class="px-md py-md whitespace-nowrap text-sm font-bold text-black"
             >
-              {{ formatNumber(nanoWitToWit(staker.amount).toFixed()) }}
+              {{ formatNumber(nanoWitToWit(staker.amount).toFixed()) }} $WIT
             </td>
             <th class="label">Timestamp</th>
             <td
@@ -56,15 +56,16 @@
           class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-wit-blue-500"
         />
       </div>
-      <div class="border-t border-white-500 flex justify-end pb-md">
-        <!-- <WPagination :total="100" :pageSize="5" :page="1" class="text-white-50 mt-md" /> -->
-      </div>
+    <!-- <div class="border-t border-white-500 flex justify-end pb-md" v-if="total > pageSize">
+      <WPagination :total="total" :pageSize="pageSize" :page="currentPage" v-model:page="currentPage" class="text-white-50 mt-md" />
+    </div> -->
 </BaseCard>
 </template>
 
 <script setup>
 import dayjs from "dayjs"
 import { WPagination } from "wit-vue-ui"
+import {ref, watch} from 'vue'
 const props = defineProps({
   loading: Boolean,
   visibleStakers: Array,
@@ -75,6 +76,12 @@ function formatDate(timestamp) {
 
   return targetDate.format("MMM D, YYYY [@] hh:mm A")
 }
+const pageSize = ref(15)
+const currentPage = ref(1)
+const total = computed(() => props.visibleStakers.length)
+watch(currentPage, (valX, _valY) => {
+  console.log('Page updated:', valX)
+})
 </script>
 <style lang="scss" scoped>
 .pointer-events-none {

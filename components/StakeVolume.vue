@@ -6,7 +6,7 @@
               Total Staked
             </p>
             <p class="data">
-              {{ formatNumber(totalStaked) }}
+              {{ formatNumber(totalStaked) }} $WIT
             </p>
           </div>
           <div class="text-center">
@@ -22,7 +22,7 @@
               Target
             </p>
             <p class="data ">
-              {{ formatNumber(stakingGoal) }}
+              {{ formatNumber(stakingGoal) }} $WIT
             </p>
           </div>
         </div>
