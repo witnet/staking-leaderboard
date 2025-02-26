@@ -66,7 +66,7 @@
 
 <script setup>
 import dayjs from "dayjs"
-import { WPagination } from "wit-vue-ui"
+// import { WPagination } from "wit-vue-ui"
 import {ref, watch} from 'vue'
 const props = defineProps({
   loading: Boolean,
