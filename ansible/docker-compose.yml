@@ -17,6 +17,7 @@ networks:
 services:
   webserver:
     image: caddy:2.7.6
+    container_name: webserver
     ports:
       - target: 80
         published: 80
