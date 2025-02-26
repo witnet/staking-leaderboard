@@ -10,7 +10,7 @@
         <label
           class="block text-xs font-bold text-[rgb(0,226,237)] mb-sm"
         >
-          Enter Address or Amount
+          Enter an Amount
         </label>
         <input
           v-model="calculatorInput"
@@ -58,7 +58,6 @@
 </template>
 
 <script setup>
-import { WButton } from "wit-vue-ui"
 import { formatNumber } from "@/utils/formatNumber.js"
 import { ref } from "vue"
 
@@ -73,7 +72,7 @@ const calculateAPY = () => {
   } else if (Number(calculatorInput.value) < 10_000) {
     errorMessage.value = "Minimum skate amount is 10,000 $WIT"
     return
-  }  else if (Number(calculatorInput.value) > 1_000_000) {
+  }  else if (Number(calculatorInput.value) > 10_000_000) {
     errorMessage.value = "Maximum skate amount is 10,000,000 $WIT"
     return
   } else {
