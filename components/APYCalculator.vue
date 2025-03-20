@@ -5,11 +5,11 @@
     </h2>
     <p class="text-white-200">Calculate your potential earnings</p>
 
-    <div class="grid grid-cols-[1fr_max-content] sm:grid-cols-1 gap-md sm:gap-sm justify-center items-end">
+    <div
+      class="grid grid-cols-[1fr_max-content] sm:grid-cols-1 gap-md sm:gap-sm justify-center items-end"
+    >
       <div class="mt-md">
-        <label
-          class="block text-xs font-bold text-[rgb(0,226,237)] mb-sm"
-        >
+        <label class="block text-xs font-bold text-[rgb(0,226,237)] mb-sm">
           Enter an Amount
         </label>
         <input
@@ -25,36 +25,32 @@
       >
         Calculate APY
       </button>
-      <p
-        v-if="showError"
-        class="text-red-50 text-sm"
-      >
-       {{ errorMessage }} 
+      <p v-if="showError" class="text-red-50 text-sm">
+        {{ errorMessage }}
       </p>
     </div>
 
-    <div
-        v-if="calculatedAPY && !errorMessage"
-        class="mt-md p-6 rounded-lg"
-      >
-        <div class="flex sm:flex-col gap-md">
-          <div class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-full">
-            <p class="text-sm text-white-200 mb-xs">
-              Annual Percentage Yield
-            </p>
-            <p class="text-2xl font-bold text-wit-blue-500">
-              {{ calculatedAPY }}%
-            </p>
-          </div>
-          <div class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-full">
-            <p class="text-sm text-white-200 mb-xs">Monthly Rewards</p>
-            <p class="text-2xl font-bold text-wit-blue-500 w-max">
-              {{ estimatedMonthlyRewards }} $WIT
-            </p>
-          </div>
+    <div v-if="calculatedAPY && !errorMessage" class="mt-md p-6 rounded-lg">
+      <div class="flex sm:flex-col gap-md">
+        <div
+          class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-full"
+        >
+          <p class="text-sm text-white-200 mb-xs">Annual Percentage Yield</p>
+          <p class="text-2xl font-bold text-wit-blue-500">
+            {{ calculatedAPY }}%
+          </p>
+        </div>
+        <div
+          class="grid justify-center items-middle text-center p-md bg-black-950 rounded-lg w-full"
+        >
+          <p class="text-sm text-white-200 mb-xs">Monthly Rewards</p>
+          <p class="text-2xl font-bold text-wit-blue-500 w-max">
+            {{ estimatedMonthlyRewards }} $WIT
+          </p>
         </div>
       </div>
-</BaseCard>
+    </div>
+  </BaseCard>
 </template>
 
 <script setup>
@@ -71,21 +67,23 @@ const calculatorInput = ref("")
 const errorMessage = ref("")
 const calculateAPY = () => {
   if (!Number(calculatorInput.value)) {
-    errorMessage.value = "Please enter a valid number" 
-    return 
+    errorMessage.value = "Please enter a valid number"
+    return
   } else if (Number(calculatorInput.value) < 10_000) {
     errorMessage.value = "Minimum skate amount is 10,000 $WIT"
     return
-  }  else if (Number(calculatorInput.value) > 10_000_000) {
+  } else if (Number(calculatorInput.value) > 10_000_000) {
     errorMessage.value = "Maximum skate amount is 10,000,000 $WIT"
     return
   } else {
     errorMessage.value = ""
     const yearlyEmission = 78_840_000_000_000_000
-    const apy = yearlyEmission / props.totalStaked 
-    calculatedAPY.value = (apy*100).toFixed(2) 
+    const apy = yearlyEmission / props.totalStaked
+    calculatedAPY.value = (apy * 100).toFixed(2)
     const amount = parseFloat(calculatorInput.value) || 100000
-    estimatedMonthlyRewards.value = formatNumber(Math.floor((amount * apy) / 12))
+    estimatedMonthlyRewards.value = formatNumber(
+      Math.floor((amount * apy) / 12),
+    )
   }
 }
 </script>
