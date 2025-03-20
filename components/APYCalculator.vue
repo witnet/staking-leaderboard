@@ -61,6 +61,10 @@
 import { formatNumber } from "@/utils/formatNumber.js"
 import { ref } from "vue"
 
+const props = defineProps({
+  totalStaked: Number,
+})
+
 const calculatedAPY = ref(null)
 const estimatedMonthlyRewards = ref(null)
 const calculatorInput = ref("")
@@ -77,10 +81,9 @@ const calculateAPY = () => {
     return
   } else {
     errorMessage.value = ""
-    // const yearlyEmission = 78_840_000
-    // const initial = 300_000_000
-    const apy = 0.2628 // yearlyEmission / initial
-    calculatedAPY.value = "26.28"
+    const yearlyEmission = 78_840_000_000_000_000
+    const apy = yearlyEmission / props.totalStaked 
+    calculatedAPY.value = (apy*100).toFixed(2) 
     const amount = parseFloat(calculatorInput.value) || 100000
     estimatedMonthlyRewards.value = formatNumber(Math.floor((amount * apy) / 12))
   }

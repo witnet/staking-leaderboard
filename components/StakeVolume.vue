@@ -43,14 +43,11 @@ import { WCard } from "wit-vue-ui"
 import { formatNumber } from '@/utils/formatNumber.js'
 const props = defineProps({
   visibleStakers: Array,
+  totalStaked: Number,
 })
 const stakingGoal = 300_000_000
-const totalStaked = computed(() => {
-  return props.visibleStakers
-    ? nanoWitToWit(
-        props.visibleStakers.reduce((acc, staker) => acc + staker.amount, 0),
-      ).toFixed()
-    : 0
+const totalStakedFormatted = computed(() => {
+  return props.totalStaked ? nanoWitToWit(props.totalStaked).toFixed() : 0
 })
 </script>
 

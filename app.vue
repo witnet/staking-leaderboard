@@ -11,9 +11,9 @@
           Secure the network, earn rewards
         </p>
       </div>
-      <APYCalculator />
+      <APYCalculator :total-staked="totalStaked" />
     </div>
-    <StakeVolume :visible-stakers="visibleStakers" :loading="loading" class="h-max md:m-md" />
+    <StakeVolume :visible-stakers="visibleStakers" :total-staked="totalStaked" :loading="loading" class="h-max md:m-md" />
     <div class="md:m-md">
       <LeaderBoard :visible-stakers="visibleStakers" class="h-max" />
     </div>
@@ -59,6 +59,12 @@ const visibleStakers = computed(() => {
       timestamp,
     }
   })
+})
+
+const totalStaked = computed(() => {
+  return visibleStakers.value
+    ?  visibleStakers.value.reduce((acc, staker) => acc + staker.amount, 0)
+    : 0
 })
 
 // const visibleStakers = ref(mockStakers);
