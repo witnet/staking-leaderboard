@@ -8,23 +8,22 @@
     >
       <thead class="text-xs text-white-200 sm:hidden">
         <tr>
-          <th scope="col" class="px-md py-md text-start">Rank</th>
-          <th scope="col" class="px-md py-md text-start">Address</th>
-          <th scope="col" class="px-md py-md text-start">Staked Amount</th>
-          <th scope="col" class="px-md text-end">Timestamp</th>
+          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.rank)" >Rank <span class="text-[8px] pl-xs">{{ getOrderArrow(Label.rank) }}</span></th>
+          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.address)">Withdrawer <span class="text-[8px] pl-xs">{{ getOrderArrow(Label.address) }}</span></th>
+          <th scope="col" class="px-md text-end cursor-pointer" @click="setSortLabel(Label.amount)">Staked Amount <span class="text-[8px] pl-xs">{{ getOrderArrow(Label.amount) }}</span></th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="(staker, index) in visibleStakers"
+          v-for="(staker) in sortedList"
           :key="staker.withdrawer"
           class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1 sm:py-md"
         >
           <th class="label">Rank</th>
           <td class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap">
-            {{ index + 1 }}
+            {{ staker.rank }}
           </td>
-          <th class="label">Address</th>
+          <th class="label">Withdrawer</th>
           <td
             class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm text-wit-blue-500 font-mono truncate hover:cursor-pointer [&&]sm:py-xs"
           >
@@ -37,15 +36,9 @@
           </td>
           <th class="label">Amount</th>
           <td
-            class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm font-bold text-black"
+            class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm font-bold text-black text-end"
           >
             {{ formatNumber(nanoWitToWit(staker.amount).toFixed()) }} $WIT
-          </td>
-          <th class="label">Timestamp</th>
-          <td
-            class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm text-end sm:text-start sm:py-sm font-mono"
-          >
-            {{ formatDate(staker.timestamp) }}
           </td>
         </tr>
       </tbody>
@@ -55,32 +48,99 @@
         class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-wit-blue-500"
       />
     </div>
-    <!-- <div class="border-t border-white-500 flex justify-end pb-md" v-if="total > pageSize">
-      <WPagination :total="total" :pageSize="pageSize" :page="currentPage" v-model:page="currentPage" class="text-white-50 mt-md" />
-    </div> -->
+    <div class="flex justify-end pb-md">
+      <WPagination v-if="total > pageSize" :total="total" :pageSize="pageSize" v-model:page="currentPage" class="text-white-50 mt-md" />
+    </div>
   </BaseCard>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import dayjs from "dayjs"
-// import { WPagination } from "wit-vue-ui"
+import { WPagination } from "wit-vue-ui"
 import { ref, watch } from "vue"
+enum Label {
+  rank,
+  address,
+  amount,
+}
+type Staker = {
+  withdrawer: string,
+  amount: number
+}
+type AggregatedStaker = {
+  rank: number
+  amount: number
+  withdrawer: string,
+}
 const props = defineProps({
   loading: Boolean,
-  visibleStakers: Array,
+  visibleStakers: {
+    type: Array<Staker>,
+    required: true,
+  }
 })
 
-function formatDate(timestamp) {
+function formatDate(timestamp: number) {
   const targetDate = dayjs(timestamp)
 
   return targetDate.format("MMM D, YYYY [@] hh:mm A")
 }
-const pageSize = ref(15)
+
 const currentPage = ref(1)
-const total = computed(() => props.visibleStakers.length)
+const total = computed(() => withdrawers.value.length)
 watch(currentPage, (valX, _valY) => {
   console.log("Page updated:", valX)
 })
+
+const currentLabel: Ref<Label> = ref(Label.rank)
+const order: Ref<boolean> = ref(true)
+const withdrawers = computed(() => {
+  return  Object.values(props.visibleStakers.reduce((acc: Record<string, Staker>, staker: Staker) => {
+    return {
+      ...acc,
+      [staker.withdrawer]: {withdrawer: staker.withdrawer, amount: (acc[staker.withdrawer] ? acc[staker.withdrawer].amount : 0) + staker.amount}
+    }
+  }, {}))
+})
+function getOrderArrow(label: Label) {
+  if(currentLabel.value === label) {
+    return order.value ? '▼': '▲'
+  } else {
+    return '▼'
+  }
+}
+function getWithdrawersWithRank(): AggregatedStaker[] {
+  return  withdrawers.value.sort((a, b) => b.amount - a.amount).map((staker, index) => {
+    return {
+      ...staker,
+      rank: index + 1
+    }
+  })
+}
+const sortedList = computed(() => {
+  const sortedInfoA = {
+    [Label.rank]: getWithdrawersWithRank().sort((a, b) => a.rank - b.rank),
+    [Label.address] : getWithdrawersWithRank().sort((a, b) => a.withdrawer.localeCompare(b.withdrawer)),
+    [Label.amount]: getWithdrawersWithRank().sort((a, b) => b.amount - a.amount),
+  }
+  const sortedInfoB = {
+    [Label.rank]: getWithdrawersWithRank().sort((a, b) => b.rank - a.rank),
+    [Label.address] : getWithdrawersWithRank().sort((a, b) => b.withdrawer.localeCompare(a.withdrawer)),
+    [Label.amount]: getWithdrawersWithRank().sort((a, b) => a.amount - b.amount),
+  }
+  return order.value ? sortedInfoA[currentLabel.value] : sortedInfoB[currentLabel.value]
+})
+
+function setSortLabel(label: Label) {
+  if(currentLabel.value === label) {
+    order.value = !order.value
+  } else {
+    currentLabel.value = label
+    order.value = true
+  }
+}
+
+const pageSize = ref(withdrawers.value.length)
 </script>
 <style lang="scss" scoped>
 .pointer-events-none {
