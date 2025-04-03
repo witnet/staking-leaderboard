@@ -3,7 +3,7 @@
     class="grid grid-rows-[max-content_1fr_max-content] grid-cols-[1fr] w-full justify-items-center"
   >
     <div class="max-w-[1300px] w-full lg:px-md">
-      <SvgIcon name="logo" class="w-[170px] mt-md" />
+      <SvgIcon name="logo" class="w-[370px] h-auto mt-md sm:w-[340px] xs:w-[300px]" />
     </div>
     <div class="max-w-[1100px] w-full grid gap-2xl">
       <div
@@ -22,6 +22,7 @@
       <StakeVolume
         :visible-stakers="visibleStakers"
         :total-staked="totalStaked"
+        :circulating-supply="circulatingSupply"
         :loading="loading"
         class="h-max md:m-md"
       />
@@ -38,10 +39,13 @@ import { ref, onMounted } from "vue"
 import { useIntervalFn } from "@vueuse/core"
 import { WFooter } from "wit-vue-ui"
 import dayjs from "dayjs"
+import { EXPLORER_API } from '@/constants'
 
 import { footerSections } from "./footerSections"
 
-const { data, refresh } = await useFetch("/api/staking")
+const { data, refresh } = await useLazyAsyncData('data-stamp-driver', async () => {
+  return await Promise.all([$fetch('/api/staking'), $fetch(`${EXPLORER_API}/network/supply?key=current_supply`)])
+})
 
 useIntervalFn(refresh, 10000)
 
@@ -53,7 +57,7 @@ function epochToTimestamp(genesisDate, epoch) {
 }
 
 const visibleStakers = computed(() => {
-  return data.value.map((stake) => {
+  return data.value[0].map((stake) => {
     const validator = stake.key.validator
     const withdrawer = stake.key.withdrawer
     const amount = stake.value.coins
@@ -76,6 +80,10 @@ const totalStaked = computed(() => {
   return visibleStakers.value
     ? visibleStakers.value.reduce((acc, staker) => acc + staker.amount, 0)
     : 0
+})
+
+const circulatingSupply = computed(() => {
+  return parseInt(data.value[1]);
 })
 
 // const visibleStakers = ref(mockStakers);

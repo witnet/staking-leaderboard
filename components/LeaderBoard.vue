@@ -58,20 +58,13 @@
 import dayjs from "dayjs"
 import { WPagination } from "wit-vue-ui"
 import { ref, watch } from "vue"
+import { type Staker, type AggregatedStaker } from '@/types'
 enum Label {
   rank,
   address,
   amount,
 }
-type Staker = {
-  withdrawer: string,
-  amount: number
-}
-type AggregatedStaker = {
-  rank: number
-  amount: number
-  withdrawer: string,
-}
+
 const props = defineProps({
   loading: Boolean,
   visibleStakers: {
@@ -94,14 +87,7 @@ watch(currentPage, (valX, _valY) => {
 
 const currentLabel: Ref<Label> = ref(Label.rank)
 const order: Ref<boolean> = ref(true)
-const withdrawers = computed(() => {
-  return  Object.values(props.visibleStakers.reduce((acc: Record<string, Staker>, staker: Staker) => {
-    return {
-      ...acc,
-      [staker.withdrawer]: {withdrawer: staker.withdrawer, amount: (acc[staker.withdrawer] ? acc[staker.withdrawer].amount : 0) + staker.amount}
-    }
-  }, {}))
-})
+const withdrawers = computed(() => getWithdrawers(props.visibleStakers))
 function getOrderArrow(label: Label) {
   if(currentLabel.value === label) {
     return order.value ? '▼': '▲'
@@ -109,24 +95,16 @@ function getOrderArrow(label: Label) {
     return '▼'
   }
 }
-function getWithdrawersWithRank(): AggregatedStaker[] {
-  return  withdrawers.value.sort((a, b) => b.amount - a.amount).map((staker, index) => {
-    return {
-      ...staker,
-      rank: index + 1
-    }
-  })
-}
 const sortedList = computed(() => {
   const sortedInfoA = {
-    [Label.rank]: getWithdrawersWithRank().sort((a, b) => a.rank - b.rank),
-    [Label.address] : getWithdrawersWithRank().sort((a, b) => a.withdrawer.localeCompare(b.withdrawer)),
-    [Label.amount]: getWithdrawersWithRank().sort((a, b) => b.amount - a.amount),
+    [Label.rank]: formatWithdrawers(withdrawers.value).sort((a, b) => a.rank - b.rank),
+    [Label.address] : formatWithdrawers(withdrawers.value).sort((a, b) => a.withdrawer.localeCompare(b.withdrawer)),
+    [Label.amount]: formatWithdrawers(withdrawers.value).sort((a, b) => b.amount - a.amount),
   }
   const sortedInfoB = {
-    [Label.rank]: getWithdrawersWithRank().sort((a, b) => b.rank - a.rank),
-    [Label.address] : getWithdrawersWithRank().sort((a, b) => b.withdrawer.localeCompare(a.withdrawer)),
-    [Label.amount]: getWithdrawersWithRank().sort((a, b) => a.amount - b.amount),
+    [Label.rank]: formatWithdrawers(withdrawers.value).sort((a, b) => b.rank - a.rank),
+    [Label.address] : formatWithdrawers(withdrawers.value).sort((a, b) => b.withdrawer.localeCompare(a.withdrawer)),
+    [Label.amount]: formatWithdrawers(withdrawers.value).sort((a, b) => a.amount - b.amount),
   }
   return order.value ? sortedInfoA[currentLabel.value] : sortedInfoB[currentLabel.value]
 })

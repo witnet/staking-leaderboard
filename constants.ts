@@ -1,0 +1,1 @@
+export const EXPLORER_API='https://witnet.network/api'
