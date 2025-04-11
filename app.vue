@@ -3,7 +3,10 @@
     class="grid grid-rows-[max-content_1fr_max-content] grid-cols-[1fr] w-full justify-items-center"
   >
     <div class="max-w-[1300px] w-full lg:px-md">
-      <SvgIcon name="logo" class="w-[370px] h-auto mt-md sm:w-[340px] xs:w-[300px]" />
+      <SvgIcon
+        name="logo"
+        class="w-[370px] h-auto mt-md sm:w-[340px] xs:w-[300px]"
+      />
     </div>
     <div class="max-w-[1100px] w-full grid gap-2xl">
       <div
@@ -42,8 +45,9 @@ import dayjs from "dayjs"
 
 import { footerSections } from "./footerSections"
 
-const { data: staking, refresh: refreshStaking } = await useFetch('/api/staking');
-const { data: supply, refresh: refreshSupply } = await useFetch('/api/supply');
+const { data: staking, refresh: refreshStaking } =
+  await useFetch("/api/staking")
+const { data: supply, refresh: refreshSupply } = await useFetch("/api/supply")
 
 useIntervalFn(refreshStaking, 10000)
 useIntervalFn(refreshSupply, 10000)
@@ -82,7 +86,7 @@ const totalStaked = computed(() => {
 })
 
 const circulatingSupply = computed(() => {
-  return parseInt(supply.value);
+  return parseInt(supply.value)
 })
 
 // const visibleStakers = ref(mockStakers);

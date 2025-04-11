@@ -7,9 +7,7 @@
       </div>
       <div class="text-center mb-md">
         <p class="title">Staked supply</p>
-        <p class="data">
-          {{ stakedSupplyPercentage }}%
-        </p>
+        <p class="data">{{ stakedSupplyPercentage }}%</p>
       </div>
       <div class="text-center mb-md">
         <p class="title">Stakers</p>
@@ -24,14 +22,17 @@ import { formatNumber } from "@/utils/formatNumber.js"
 const props = defineProps({
   visibleStakers: Array,
   totalStaked: Number,
-  circulatingSupply: Number
+  circulatingSupply: Number,
 })
 const totalStakedFormatted = computed(() => {
   return props.totalStaked ? nanoWitToWit(props.totalStaked).toFixed() : 0
 })
 
 const stakedSupplyPercentage = computed(() => {
-  return (props.totalStaked / (props.circulatingSupply * 1000000000)).toFixed(4) * 100
+  return (
+    (props.totalStaked / (props.circulatingSupply * 1000000000)).toFixed(4) *
+    100
+  )
 })
 
 const numberOfStakers = ref(getWithdrawers(props.visibleStakers).length)

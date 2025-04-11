@@ -1,15 +1,15 @@
 export type Staker = {
-  withdrawer: string,
+  withdrawer: string
   amount: number
 }
 export type AggregatedStaker = {
   rank: number
   amount: number
-  withdrawer: string,
+  withdrawer: string
 }
 export enum RouteName {
   supply,
-  staking
+  staking,
 }
 export enum Label {
   rank,

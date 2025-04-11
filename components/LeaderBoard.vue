@@ -8,14 +8,47 @@
     >
       <thead class="text-xs text-white-200 sm:hidden">
         <tr>
-          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.rank)" >Rank <SortArrow :currentLabel="currentLabel" :label="Label.rank" :order="order" /></th>
-          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.address)">Withdrawer <SortArrow :currentLabel="currentLabel" :label="Label.address" :order="order" /></th>
-          <th scope="col" class="px-md text-end cursor-pointer" @click="setSortLabel(Label.amount)">Staked Amount <SortArrow :currentLabel="currentLabel" :label="Label.amount" :order="order" /></th>
+          <th
+            scope="col"
+            class="px-md py-md text-start cursor-pointer"
+            @click="setSortLabel(Label.rank)"
+          >
+            Rank
+            <SortArrow
+              :currentLabel="currentLabel"
+              :label="Label.rank"
+              :order="order"
+            />
+          </th>
+          <th
+            scope="col"
+            class="px-md py-md text-start cursor-pointer"
+            @click="setSortLabel(Label.address)"
+          >
+            Withdrawer
+            <SortArrow
+              :currentLabel="currentLabel"
+              :label="Label.address"
+              :order="order"
+            />
+          </th>
+          <th
+            scope="col"
+            class="px-md text-end cursor-pointer"
+            @click="setSortLabel(Label.amount)"
+          >
+            Staked Amount
+            <SortArrow
+              :currentLabel="currentLabel"
+              :label="Label.amount"
+              :order="order"
+            />
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="(staker) in sortedStakers"
+          v-for="staker in sortedStakers"
           :key="staker.withdrawer"
           class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1 sm:py-md"
         >
@@ -49,7 +82,13 @@
       />
     </div>
     <div class="flex justify-end pb-md">
-      <WPagination v-if="total > pageSize" :total="total" :pageSize="pageSize" v-model:page="currentPage" class="text-white-50 mt-md" />
+      <WPagination
+        v-if="total > pageSize"
+        :total="total"
+        :pageSize="pageSize"
+        v-model:page="currentPage"
+        class="text-white-50 mt-md"
+      />
     </div>
   </BaseCard>
 </template>
@@ -57,14 +96,14 @@
 <script setup lang="ts">
 import { WPagination } from "wit-vue-ui"
 import { ref, watch } from "vue"
-import { Label, type AggregatedStaker, type Staker } from '@/types'
+import { Label, type AggregatedStaker, type Staker } from "@/types"
 
 const props = defineProps({
   loading: Boolean,
   visibleStakers: {
     type: Array<Staker>,
     required: true,
-  }
+  },
 })
 
 const currentPage = ref(1)
@@ -80,15 +119,20 @@ const withdrawers = computed(() => getWithdrawers(props.visibleStakers))
 const sortedStakers = computed(() => {
   const formattedWithdrawers = formatWithdrawers(withdrawers.value)
   const sortFunctions = {
-    [Label.rank]: (a: AggregatedStaker, b: AggregatedStaker) => order.value ? a.rank - b.rank : b.rank - a.rank,
-    [Label.address]: (a: AggregatedStaker, b: AggregatedStaker) => order.value ? a.withdrawer.localeCompare(b.withdrawer) : b.withdrawer.localeCompare(a.withdrawer),
-    [Label.amount]: (a: AggregatedStaker, b: AggregatedStaker) => order.value ? b.amount - a.amount : a.amount - b.amount,
+    [Label.rank]: (a: AggregatedStaker, b: AggregatedStaker) =>
+      order.value ? a.rank - b.rank : b.rank - a.rank,
+    [Label.address]: (a: AggregatedStaker, b: AggregatedStaker) =>
+      order.value
+        ? a.withdrawer.localeCompare(b.withdrawer)
+        : b.withdrawer.localeCompare(a.withdrawer),
+    [Label.amount]: (a: AggregatedStaker, b: AggregatedStaker) =>
+      order.value ? b.amount - a.amount : a.amount - b.amount,
   }
   return formattedWithdrawers.sort(sortFunctions[currentLabel.value])
 })
 
 function setSortLabel(label: Label) {
-  if(currentLabel.value === label) {
+  if (currentLabel.value === label) {
     order.value = !order.value
   } else {
     currentLabel.value = label
