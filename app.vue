@@ -39,15 +39,14 @@ import { ref, onMounted } from "vue"
 import { useIntervalFn } from "@vueuse/core"
 import { WFooter } from "wit-vue-ui"
 import dayjs from "dayjs"
-import { EXPLORER_API } from '@/constants'
 
 import { footerSections } from "./footerSections"
 
-const { data, refresh } = await useLazyAsyncData('data-stamp-driver', async () => {
-  return await Promise.all([$fetch('/api/staking'), $fetch(`${EXPLORER_API}/network/supply?key=current_supply`)])
-})
+const { data: staking, refresh: refreshStaking } = await useFetch('/api/staking');
+const { data: supply, refresh: refreshSupply } = await useFetch('/api/supply');
 
-useIntervalFn(refresh, 10000)
+useIntervalFn(refreshStaking, 10000)
+useIntervalFn(refreshSupply, 10000)
 
 function epochToTimestamp(genesisDate, epoch) {
   const secondsSinceGenesis = epoch * 45
@@ -57,7 +56,7 @@ function epochToTimestamp(genesisDate, epoch) {
 }
 
 const visibleStakers = computed(() => {
-  return data.value[0].map((stake) => {
+  return staking.value.map((stake) => {
     const validator = stake.key.validator
     const withdrawer = stake.key.withdrawer
     const amount = stake.value.coins
@@ -83,7 +82,7 @@ const totalStaked = computed(() => {
 })
 
 const circulatingSupply = computed(() => {
-  return parseInt(data.value[1]);
+  return parseInt(supply.value);
 })
 
 // const visibleStakers = ref(mockStakers);

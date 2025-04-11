@@ -8,14 +8,14 @@
     >
       <thead class="text-xs text-white-200 sm:hidden">
         <tr>
-          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.rank)" >Rank <span class="text-[8px] pl-xs">{{ getOrderArrow(Label.rank) }}</span></th>
-          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.address)">Withdrawer <span class="text-[8px] pl-xs">{{ getOrderArrow(Label.address) }}</span></th>
-          <th scope="col" class="px-md text-end cursor-pointer" @click="setSortLabel(Label.amount)">Staked Amount <span class="text-[8px] pl-xs">{{ getOrderArrow(Label.amount) }}</span></th>
+          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.rank)" >Rank <SortArrow :currentLabel="currentLabel" :label="Label.rank" :order="order" /></th>
+          <th scope="col" class="px-md py-md text-start cursor-pointer" @click="setSortLabel(Label.address)">Withdrawer <SortArrow :currentLabel="currentLabel" :label="Label.address" :order="order" /></th>
+          <th scope="col" class="px-md text-end cursor-pointer" @click="setSortLabel(Label.amount)">Staked Amount <SortArrow :currentLabel="currentLabel" :label="Label.amount" :order="order" /></th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="(staker) in sortedList"
+          v-for="(staker) in sortedStakers"
           :key="staker.withdrawer"
           class="transition-all duration-200 even:bg-black-600 sm:grid sm:grid-col-1 sm:py-md"
         >
@@ -55,15 +55,9 @@
 </template>
 
 <script setup lang="ts">
-import dayjs from "dayjs"
 import { WPagination } from "wit-vue-ui"
 import { ref, watch } from "vue"
-import { type Staker, type AggregatedStaker } from '@/types'
-enum Label {
-  rank,
-  address,
-  amount,
-}
+import { Label, type AggregatedStaker, type Staker } from '@/types'
 
 const props = defineProps({
   loading: Boolean,
@@ -72,12 +66,6 @@ const props = defineProps({
     required: true,
   }
 })
-
-function formatDate(timestamp: number) {
-  const targetDate = dayjs(timestamp)
-
-  return targetDate.format("MMM D, YYYY [@] hh:mm A")
-}
 
 const currentPage = ref(1)
 const total = computed(() => withdrawers.value.length)
@@ -88,25 +76,15 @@ watch(currentPage, (valX, _valY) => {
 const currentLabel: Ref<Label> = ref(Label.rank)
 const order: Ref<boolean> = ref(true)
 const withdrawers = computed(() => getWithdrawers(props.visibleStakers))
-function getOrderArrow(label: Label) {
-  if(currentLabel.value === label) {
-    return order.value ? '▼': '▲'
-  } else {
-    return '▼'
+
+const sortedStakers = computed(() => {
+  const formattedWithdrawers = formatWithdrawers(withdrawers.value)
+  const sortFunctions = {
+    [Label.rank]: (a: AggregatedStaker, b: AggregatedStaker) => order.value ? a.rank - b.rank : b.rank - a.rank,
+    [Label.address]: (a: AggregatedStaker, b: AggregatedStaker) => order.value ? a.withdrawer.localeCompare(b.withdrawer) : b.withdrawer.localeCompare(a.withdrawer),
+    [Label.amount]: (a: AggregatedStaker, b: AggregatedStaker) => order.value ? b.amount - a.amount : a.amount - b.amount,
   }
-}
-const sortedList = computed(() => {
-  const sortedInfoA = {
-    [Label.rank]: formatWithdrawers(withdrawers.value).sort((a, b) => a.rank - b.rank),
-    [Label.address] : formatWithdrawers(withdrawers.value).sort((a, b) => a.withdrawer.localeCompare(b.withdrawer)),
-    [Label.amount]: formatWithdrawers(withdrawers.value).sort((a, b) => b.amount - a.amount),
-  }
-  const sortedInfoB = {
-    [Label.rank]: formatWithdrawers(withdrawers.value).sort((a, b) => b.rank - a.rank),
-    [Label.address] : formatWithdrawers(withdrawers.value).sort((a, b) => b.withdrawer.localeCompare(a.withdrawer)),
-    [Label.amount]: formatWithdrawers(withdrawers.value).sort((a, b) => a.amount - b.amount),
-  }
-  return order.value ? sortedInfoA[currentLabel.value] : sortedInfoB[currentLabel.value]
+  return formattedWithdrawers.sort(sortFunctions[currentLabel.value])
 })
 
 function setSortLabel(label: Label) {
