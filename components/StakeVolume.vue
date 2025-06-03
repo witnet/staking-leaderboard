@@ -32,7 +32,7 @@ const stakedSupplyPercentage = computed(() => {
   return (
     (props.totalStaked / (props.circulatingSupply * 1000000000)).toFixed(4) *
     100
-  )
+  ).toFixed(2)
 })
 
 const numberOfStakers = ref(getWithdrawers(props.visibleStakers).length)
