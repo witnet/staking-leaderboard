@@ -63,7 +63,7 @@ const visibleStakers = computed(() => {
   return staking.value.map((stake) => {
     const validator = stake.key.validator
     const withdrawer = stake.key.withdrawer
-    const amount = stake.value.coins
+    const amount = stake.value.coins.toString()
     const epoch = stake.value.epochs.mining
     const genesisDate = new Date(1602666000000)
     const timestamp = epochToTimestamp(genesisDate, epoch)
@@ -81,15 +81,16 @@ const visibleStakers = computed(() => {
 
 const totalStaked = computed(() => {
   return visibleStakers.value
-    ? visibleStakers.value.reduce((acc, staker) => acc + staker.amount, 0)
-    : 0
+    ? visibleStakers.value
+        .reduce((acc, staker) => acc + BigInt(staker.amount), BigInt(0))
+        .toString()
+    : "0"
 })
 
 const circulatingSupply = computed(() => {
   return parseInt(supply.value)
 })
 
-// const visibleStakers = ref(mockStakers);
 const loading = ref(false)
 
 const handleScroll = () => {

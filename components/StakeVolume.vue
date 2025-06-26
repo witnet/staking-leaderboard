@@ -18,21 +18,27 @@
 </template>
 
 <script setup>
+import Big from "big.js"
 import { formatNumber } from "@/utils/formatNumber.js"
 const props = defineProps({
   visibleStakers: Array,
-  totalStaked: Number,
+  totalStaked: String,
   circulatingSupply: Number,
 })
 const totalStakedFormatted = computed(() => {
-  return props.totalStaked ? nanoWitToWit(props.totalStaked).toFixed() : 0
+  return props.totalStaked
+    ? new Big(nanoWitToWit(props.totalStaked)).round(0)
+    : 0
 })
 
 const stakedSupplyPercentage = computed(() => {
-  return (
-    (props.totalStaked / (props.circulatingSupply * 1000000000)).toFixed(4) *
-    100
-  ).toFixed(2)
+  if (!props.totalStaked || !props.circulatingSupply) return "0.00"
+  const totalStakedBig = new Big(props.totalStaked)
+  const circulatingSupplyBig = new Big(props.circulatingSupply).times(
+    1000000000,
+  )
+  if (circulatingSupplyBig.eq(0)) return "0.00"
+  return totalStakedBig.div(circulatingSupplyBig).times(100).round(2).toFixed(2)
 })
 
 const numberOfStakers = ref(getWithdrawers(props.visibleStakers).length)

@@ -71,7 +71,10 @@
           <td
             class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm font-bold text-black text-end"
           >
-            {{ formatNumber(nanoWitToWit(staker.amount).toFixed()) }} $WIT
+            {{
+              formatNumber(new Big(nanoWitToWit(staker.amount)).round(0))
+            }}
+            $WIT
           </td>
         </tr>
       </tbody>
@@ -94,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import { Big } from "big.js"
 import { WPagination } from "wit-vue-ui"
 import { ref, watch } from "vue"
 import { Label, type AggregatedStaker, type Staker } from "@/types"
@@ -125,8 +129,20 @@ const sortedStakers = computed(() => {
       order.value
         ? a.withdrawer.localeCompare(b.withdrawer)
         : b.withdrawer.localeCompare(a.withdrawer),
-    [Label.amount]: (a: AggregatedStaker, b: AggregatedStaker) =>
-      order.value ? b.amount - a.amount : a.amount - b.amount,
+    [Label.amount]: (a: AggregatedStaker, b: AggregatedStaker) => {
+      const amountA = BigInt(a.amount)
+      const amountB = BigInt(b.amount)
+
+      if (amountA === amountB) return 0
+
+      return order.value
+        ? amountB > amountA
+          ? 1
+          : -1
+        : amountA > amountB
+          ? 1
+          : -1
+    },
   }
   return formattedWithdrawers.sort(sortFunctions[currentLabel.value])
 })

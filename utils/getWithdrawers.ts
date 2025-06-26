@@ -7,9 +7,11 @@ export function getWithdrawers(stakes: Staker[]): Staker[] {
         ...acc,
         [staker.withdrawer]: {
           withdrawer: staker.withdrawer,
-          amount:
-            (acc[staker.withdrawer] ? acc[staker.withdrawer].amount : 0) +
-            staker.amount,
+          amount: (
+            (acc[staker.withdrawer]
+              ? BigInt(acc[staker.withdrawer].amount)
+              : BigInt(0)) + BigInt(staker.amount)
+          ).toString(),
         },
       }
     }, {}),

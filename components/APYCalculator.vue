@@ -54,11 +54,12 @@
 </template>
 
 <script setup>
-import { formatNumber } from "@/utils/formatNumber.js"
+import Big from "big.js"
 import { ref } from "vue"
+import { formatNumber } from "@/utils/formatNumber.js"
 
 const props = defineProps({
-  totalStaked: Number,
+  totalStaked: String,
 })
 
 const calculatedAPY = ref(null)
@@ -78,11 +79,14 @@ const calculateAPY = () => {
   } else {
     errorMessage.value = ""
     const yearlyEmission = 78_840_000_000_000_000
-    const apy = yearlyEmission / props.totalStaked
-    calculatedAPY.value = (apy * 100).toFixed(2)
+    // Can't use native BigInt because division of two BigInt values returns integer division
+    // it truncates the decimal part and keeps only the whole number
+    const apy = new Big(yearlyEmission).div(new Big(props.totalStaked))
+
+    calculatedAPY.value = apy.mul(100).toFixed(2)
     const amount = parseFloat(calculatorInput.value) || 100000
     estimatedMonthlyRewards.value = formatNumber(
-      Math.floor((amount * apy) / 12),
+      apy.times(amount).div(12).round(0, 0),
     )
   }
 }
