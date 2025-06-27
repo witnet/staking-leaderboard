@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt build && cp node_modules/tiny-secp256k1/lib/secp256k1.wasm .output/server/node_modules/tiny-secp256k1/lib/",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -20,6 +20,7 @@
     "nuxt": "^3.15.4",
     "prettier": "^3.5.2",
     "sass": "^1.85.1",
+    "tiny-secp256k1": "^2.2.4",
     "tokenizr": "^1.7.0",
     "vue": "latest",
     "vue-router": "latest",
