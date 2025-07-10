@@ -29,8 +29,15 @@ export default (call: Function, name: RouteName) =>
     try {
       const result = await call()
       // Store in cache
-      cache.data = result
-      cache.timestamp = now
+      if (result !== null) {
+        cache.data = result
+        cache.timestamp = now
+      } else {
+        console.warn(
+          `No data returned for ${name}, cache not updated. Using stale data if available.`,
+        )
+      }
+
       return cache.data
     } catch {
       return { error: "Failed to fetch data" }

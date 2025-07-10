@@ -11,31 +11,36 @@ const stakes = async () => {
   let offset = 0
   const maxRetries = 3
 
-  while (!lastResult || lastResult.length === limit) {
-    let attempt = 0
-    let success = false
+  try {
+    while (!lastResult || lastResult.length === limit) {
+      let attempt = 0
+      let success = false
 
-    while (attempt < maxRetries && !success) {
-      try {
-        lastResult = await provider.stakes({ params: { limit, offset } })
-        results.push(...lastResult)
+      while (attempt < maxRetries && !success) {
+        try {
+          lastResult = await provider.stakes({ params: { limit, offset } })
+          results.push(...lastResult)
 
-        offset += limit
-        success = true
-      } catch (error) {
-        attempt++
-        console.warn(`Attempt ${attempt} failed:`, error)
-        if (attempt >= maxRetries) {
-          console.error("Max retries reached. Aborting.")
-          throw error
+          offset += limit
+          success = true
+        } catch (error) {
+          attempt++
+          console.warn(`Attempt ${attempt} failed:`, error)
+          if (attempt >= maxRetries) {
+            console.error("Max retries reached. Aborting.")
+            throw error
+          } else {
+            // Exponential backoff
+            await new Promise((res) => setTimeout(res, 1000 * attempt))
+          }
         }
-
-        // Exponential backoff
-        await new Promise((res) => setTimeout(res, 1000 * attempt))
       }
     }
+  } catch (error) {
+    console.error("Error fetching stakes:", error)
+    return null
   }
-
+  console.log("results", results)
   return results
 }
 
