@@ -71,9 +71,7 @@
           <td
             class="px-md py-md [&&]:sm:pt-sm whitespace-nowrap text-sm font-bold text-black text-end"
           >
-            {{
-              formatNumber(new Big(nanoWitToWit(staker.amount)).round(0))
-            }}
+            {{ formatNumber(new Big(nanoWitToWit(staker.amount)).round(0)) }}
             $WIT
           </td>
         </tr>
