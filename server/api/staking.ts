@@ -2,7 +2,7 @@ import { RouteName } from "~/types"
 import cacheData from "./cacheData"
 import { Witnet } from "@witnet/sdk"
 
-const provider = new Witnet.JsonRpcProvider("https://rpc-01.witnet.io")
+const provider = new Witnet.JsonRpcProvider("https://rpc-02.witnet.io")
 
 const stakes = async () => {
   const limit = 40
